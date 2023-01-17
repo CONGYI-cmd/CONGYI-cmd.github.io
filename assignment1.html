@@ -4,7 +4,7 @@
         <meta charset="utf-8"> 
         <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 
-        <title>Example Student's HCDE 439 Physical Computing Page!</title> 
+        <title>Congyi's HCDE 439 Physical Computing Page!</title> 
 
         <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
 
@@ -12,10 +12,71 @@
     <body> 
 
         <div class="header">
-            <h1>Example Student's Assignment 1!</h1>
+            <h1>Congyi's Assignment 1!</h1>
             <p>
-            <img src="red-panda.jpg" width=400></a>
+                A schematic for 3 LEDs connected to the Arduino. The LEDs blink in a pattern. <br>
+                <br>
+            Components in the circuit:<br>
+                3 red LEDs<br>
+                3 220ohm resisters<br>
+                6 wires<br>
             </p>
+            <p>
+                Schematic:
+            </p>
+            <p>
+            <img src="A1-Schematic.jpg" width=400></a>
+            </p>
+            <p>
+                <img src="A1-Calaculation.jpg" width=400></a>
+            </p>
+            <p>
+                Circuit:
+            </p>
+            <p>
+                <img src="Circuit.jpg" width=400></a>
+            </p>
+            <p>
+                The circuit was implemented on my breadboard. Input Wires are pluged into pin 11, 12, and 13. Output wires are all pluged into the ground.
+            <p>
+                Firmware:
+            </p>
+            <p>
+                // the setup function runs once when you press reset or power the board<br>
+                void setup() {<br>
+                    &emsp;// initialize digital pin 11 as an output.<br>
+                    &emsp;pinMode(11, OUTPUT);<br>
+                    &emsp;// initialize digital pin 12 as an output.<br>
+                    &emsp;pinMode(12, OUTPUT);<br>
+                    &emsp;// initialize digital pin 13 as an output.<br>
+                    &emsp;pinMode(13, OUTPUT);<br>
+                }<br/>
+                <br/>
+                // the loop function runs over and over again forever<br>
+                void loop() {<br>
+                    &emsp;digitalWrite(11, HIGH);  // turn the first LED on (HIGH is the voltage level)<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                    &emsp;digitalWrite(11, LOW);   // turn the first LED off by making the voltage LOW<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                    &emsp;digitalWrite(12, HIGH);  // turn the second LED on (HIGH is the voltage level)<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                    &emsp;digitalWrite(12, LOW);   // turn the second LED off by making the voltage LOW<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                    &emsp;digitalWrite(13, HIGH);  // turn the third LED on (HIGH is the voltage level)<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                    &emsp;digitalWrite(13, LOW);   // turn the third LED off by making the voltage LOW<br>
+                    &emsp;delay(100);                      // wait for 1/10 of a second<br>
+                }<br>
+
+            </p>
+
+            <p>
+                Circuit's Operation GIF:
+            </p>
+            <p>
+                <IMG SRC="km5ks-z6dut.gif">
+            </p>
+
             <p>
             Here is all the documentation for assignment 1!
             </p>
