@@ -77,18 +77,20 @@ void loop() {<br>
   &emsp;if (buttonState == HIGH) {<br>
     &emsp;&emsp;// repeats as long as the push button is on<br>
     &emsp;&emsp;while (buttonState == HIGH) {<br>
-        &emsp;&emsp;&emsp;// set the brightness of RED led:<br>
-        &emsp;&emsp;&emsp;analogWrite(led, brightness);<br>
-      <br/>
-      &emsp;&emsp;&emsp;// change the brightness for next time through the loop:<br>
-      &emsp;&emsp;&emsp;brightness = brightness + fadeAmount;<br>
-      <br/>
-      &emsp;&emsp;&emsp;// reverse the direction of the fading at the ends of the fade:<br>
-      &emsp;&emsp;&emsp;if (brightness <= 0 || brightness >= 255) {<br>
-        &emsp;&emsp;&emsp;&emsp;fadeAmount = -fadeAmount;<br>
-      &emsp;&emsp;&emsp;}<br>
-      &emsp;&emsp;&emsp;// wait for 30 milliseconds to see the dimming effect<br>
-      &emsp;&emsp;&emsp;delay(30);<br>
+        &emsp;&emsp;&emsp;// a for loop for increasing the brightness of RED led:<br>
+        &emsp;&emsp;&emsp;for (int i = 0; i < 100; i++){<br>
+            &emsp;&emsp;&emsp;&emsp;// set the brightness of the RED led<br>
+            &emsp;&emsp;&emsp;&emsp;analogWrite(led, i);<br>
+            &emsp;&emsp;&emsp;&emsp;// wait for 10 milliseconds<br>
+            &emsp;&emsp;&emsp;&emsp;delay(10);<br>
+            &emsp;&emsp;&emsp;}<br>
+            &emsp;&emsp;&emsp;// a for loop for decreasing the brightness of RED led:<br>
+            &emsp;&emsp;&emsp;for (int i = 100; i >=0; i--){<br>
+                &emsp;&emsp;&emsp;&emsp;// set the brightness of the RED led<br>
+                &emsp;&emsp;&emsp;&emsp;analogWrite(led, i);<br>
+                &emsp;&emsp;&emsp;&emsp;// wait for 10 milliseconds<br>
+                &emsp;&emsp;&emsp;&emsp;delay(10);<br>
+                &emsp;&emsp;&emsp;} <br>
       <br/>
       &emsp;&emsp;&emsp;// set the brightness of green in RGB led:<br>
       &emsp;&emsp;&emsp;analogWrite(Green, brightness);<br>
