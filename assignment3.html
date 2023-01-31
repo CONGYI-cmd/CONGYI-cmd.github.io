@@ -1,0 +1,146 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Congyi's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Congyi's Assignment 3!</h1>
+            <p>
+                A schematic for 3 LEDs and one photoresistor connected to the Arduino. The LEDs changed states becasue of changes in the sensor. <br>
+                <br>
+            Components in the circuit:<br>
+            &emsp;2 red LEDs<br>
+            &emsp;1 green LED<br>
+            &emsp;3 220ohm resistors<br>
+            &emsp;1 photoresistor<br>
+            &emsp;1 10kohm resistor<br>
+            &emsp;several wires<br>
+            </p>
+            <h4>
+                Schematic:
+            </h4>
+            <p>
+            <img src="A3/Schematic.jpg" width=600></a>
+            </p>
+            <p>
+                <img src="A3/A3-Calculation.jpg" width=600></a>
+            </p>
+            <h4>
+                Circuit:
+            </h4>
+            <p>
+                <img src="A3/Circuit.jpg" width=600></a>
+            </p>
+            <p>
+                The circuit was implemented on my breadboard. Input Wires are pluged into pin 6, 10, and 11. The photoresistor is attached to pin A2 for reading the analog. Output wires are all pluged into the ground.
+            <h4>
+            
+            <p>
+                <img src="A3/Circuit with sensor coverd.jpg" width=600></a>
+            </p>
+            <p>
+                The above picture shows the state of the leds when the photoresistor is fully covered. 
+            </p>
+
+            <h4>
+            
+                Firmware:<br>
+                The pin 6, 10, and 11 are outputs and pin A2 is input.<br>
+                I calibrated the max and minimum sensor value at the beginning for a better user experience.<br>
+                The program will print those sensor vlaues for giving a reference. The sensor value normally stay in a range of 600 to 900 before constrain. <br>
+                One red and one green leds get dimmer as if photoresistor is covered. Another red led stops blinking when the sensor is fully covered.<br> 
+            </h4>
+            <p>
+                int sensorValue = 0;   // the sensor value<br>
+                int sensorMin = 0;  // minimum sensor value<br>
+                int sensorMax = 1023;     // maximum sensor value<br>
+                <br/>
+                const int sensorPin = A2;  // pin that the sensor is attached to<br>
+                <br/>
+                // the setup routine runs once when you press reset:<br>
+                void setup() {<br>
+                    &emsp;// declare Pin 11 to be an output:<br>
+                    &emsp;pinMode(11, OUTPUT);<br>
+                    &emsp;// declare Pin 6 to be an output:<br>
+                    &emsp;pinMode(6, OUTPUT);<br>
+                    &emsp;// declare Pin 10 to be an output:<br>
+                    &emsp;pinMode(10, OUTPUT);<br>
+                    &emsp;// put your setup code here, to run once:<br>
+                    &emsp;digitalWrite(11, HIGH);<br>
+                    &emsp;// initialize serial communication at 9600 bits per second:<br>
+                    &emsp;Serial.begin(9600);<br>
+                  <br/>
+                  &emsp;// calibrate during the first five seconds<br>
+                  &emsp;while (millis() < 5000) { // while the time doesn't exceed five seconds<br>
+                  &emsp; &emsp;sensorValue = analogRead(sensorPin); // read the analog in value:<br>
+                    <br/>
+                    &emsp; &emsp;// record the maximum sensor value<br>
+                    &emsp; &emsp;if (sensorValue > sensorMax) { // if the current value is bigger than the recorded one<br>
+                        &emsp; &emsp; &emsp;sensorMax = sensorValue; // update the new max sensor value<br>
+                        &emsp; &emsp;}<br>
+                    <br/>
+                    &emsp; &emsp;// record the minimum sensor value<br>
+                    &emsp; &emsp;if (sensorValue < sensorMin) { // if the current value is smaller than recorded one<br>
+                        &emsp; &emsp; &emsp;sensorMin = sensorValue; // update the new min sensor value<br>
+                        &emsp; &emsp;}<br>
+                        &emsp;}<br>
+                  <br/>
+                  &emsp;// signal the end of the calibration period<br>
+                  &emsp;digitalWrite(13, LOW);<br>
+                }<br>
+                <br/>
+                // put your main code here, to run repeatedly:<br>
+                void loop() {<br>
+                    &emsp;// read the analog in value:<br>
+                    &emsp;int val = analogRead(A2);<br>
+                    &emsp;// constrain the anaglog value with the sensor values from calibration:<br>
+                    &emsp;int sensVal = constrain(val, sensorMin, sensorMax);<br>
+                    &emsp;// map it to the range of the analog out:<br>
+                    &emsp;val = map(sensVal, sensorMin, sensorMax, 0, 255);<br>
+                    &emsp;// set the brightness of the led in pin 11<br>
+                    &emsp;analogWrite(11, val);<br>
+                    &emsp;// set the brightness of the led in pin 10<br>
+                    &emsp;analogWrite(10, val);<br>
+                  <br/>
+                  &emsp;// if the other leds are on, led in pin 6 blinks<br>
+                  &emsp;if (val > 0){ // if the analog out value is bigger than 0<br>
+                    &emsp; &emsp;digitalWrite(6, HIGH);  // turn the LED on (HIGH is the voltage level)<br>
+                    &emsp; &emsp;delay(1000);                      // wait for a second<br>
+                    &emsp; &emsp;digitalWrite(6, LOW);   // turn the LED off by making the voltage LOW<br>
+                    &emsp; &emsp;delay(1000);                      // wait for a second<br>
+                    &emsp;}     <br>     
+                    <br/>
+                    &emsp;// print the results to the Serial Monitor:<br>
+                    &emsp;Serial.print(sensorMax); // prints the max sensor value<br>
+                    &emsp;Serial.println(sensorMin); // prints the min sensor value and then change a line<br>
+                    &emsp;Serial.print("sensor="); // prints "sensor=""<br>
+                    &emsp;Serial.print(sensVal); // prints the constrained sensor value <br>
+                    &emsp;Serial.print("\t output="); // prints a tab and "output="<br>
+                    &emsp;Serial.println(val); // prints the analog out value of leds<br>
+                }<br>
+                
+
+            </p>
+
+            <h4>
+                Circuit's Operation GIF:
+            </h4>
+            <p>
+                <IMG SRC="A3/Input Output！.gif">
+            </p>
+
+            <h6>
+            Here is all the documentation for assignment 3!
+            </h6>
+        </div>
+        
+    </body>
+</html>
