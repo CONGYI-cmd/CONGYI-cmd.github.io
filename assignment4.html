@@ -1,0 +1,129 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Congyi's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Congyi's Assignment 4!</h1>
+            <p>
+                This assignment contains a schematic, circuit, and code that uses parts from your kit that require a library, and includes both an input part and an output part. <br>
+                <br>
+            Components in the circuit:<br>
+            &emsp;1 Servo motor<br>
+            &emsp;1 Keypad<br>
+            &emsp;several wires<br>
+            </p>
+            <h4>
+                Schematic:
+            </h4>
+            <p>
+            <img src="Keypad.jpg" width=600></a>
+            </p>
+            <p>
+                <img src="Servo.jpg" width=600></a>
+            </p>
+            <h4>
+                Circuit:
+            </h4>
+            <p>
+                <img src="Firmwire.jpg" width=600></a>
+            </p>
+            <p>
+                The circuit was implemented on my breadboard. The keypad is attached to pin 9, 8, 7, 6, 5, 4, 3, 2. The Servo motor is attached to pin 11, 5V, and GND.
+            <h4>
+            
+            <p>
+                <img src="Serial Monitor.png" width=600></a>
+            </p>
+            <p>
+                The above picture shows the feedbacks in serial monitor as the user input with the keypad. 
+            </p>
+
+            <h4>
+            
+                Firmware:<br>
+                The program contains one keypad as input and one servo motor as output<br>
+                It will print those input for giving a reference. 3 input keys will count as a angle for servo motor to work.<br>
+                If the number is small than 0 or bigger than 180, it will ask the user to try again in the serial monitor.<br> 
+            </h4>
+            <p>
+                #include <Keypad.h> // include the Keypad library<br>
+                    #include <Servo.h> // include the Servo library<br>
+                        <br/>
+                    Servo myServo;  // create a servo object<br>
+                    <br/>
+                    
+                    const byte ROWS = 4; //four rows<br>
+                    const byte COLS = 4; //four columns<br>
+                    <br/>
+                    char keys[ROWS][COLS] = { // set up the rows and columns of the keypad<br>
+                        &emsp;{'1','2','3','A'}, // the first row is '1','2','3','A'<br>
+                        &emsp;{'4','5','6','B'}, // the second row is '4','5','6','B'<br>
+                        &emsp;{'7','8','9','C'}, // the third row is '7','8','9','C'<br>
+                        &emsp;{'*','0','#','D'} // the fourth row'*','0','#','D'<br>
+                    };<br>
+                    <br/>
+                    byte rowPins[ROWS] = {9, 8, 7, 6}; //connect to the row pinouts of the keypad<br>
+                    byte colPins[COLS] = {5, 4, 3, 2}; //connect to the column pinouts of the keypad<br>
+                    <br/>
+                    //Create an object of keypad<br>
+                    Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );<br>
+                    <br/>
+                    int count = 0; // initialize the count number as 0<br>
+                    int angle = 0; // initialize the turning angle as 0<br>
+                    <br/>
+                    void setup(){<br>
+                        &emsp;// put your setup code here, to run once:<br>
+                        &emsp;Serial.begin(9600); // initialize the serial at 9600 bits per second<br>
+                        &emsp;myServo.attach(11); // attaches the servo on pin 11 to the servo object<br>
+                      <br/>
+                    }<br>
+                    <br/>
+                    void loop(){
+                        &emsp;// put your main code here, to run repeatedly:<br>
+                        &emsp;char key = keypad.getKey();// Read the key<br>
+                      <br/>
+                      &emsp;// Print if key pressed<br>
+                      &emsp;if (key) {<br>
+                        &emsp; &emsp;Serial.print("Key Pressed : "); // print "Key Pressed : " in the serial monitor <br>
+                        &emsp; &emsp;Serial.println(key); // print the pressed key in the serial monitor<br>
+                        &emsp; &emsp;angle = (angle*10) + (key-48); // operate the angle number from ASCII key number to integer and change its unit<br>
+                        &emsp; &emsp;count+=1; // increase the count number by one<br>
+                        &emsp; &emsp;if (count >= 3) { // if the user input 3 or more than 3 numbers<br>
+                            &emsp; &emsp; &emsp;Serial.print("Turning angle: "); // print "Turning angle: " in the serial monitor<br>
+                            &emsp; &emsp; &emsp;Serial.println(angle); // print turning angle in the serial monitor<br>
+                            &emsp; &emsp; &emsp;if (angle > 180 || angle < 0){ // if the turning angle is smaller than 0 or greater than 180<br>
+                                &emsp; &emsp; &emsp; &emsp;Serial.println("You must input a number between 0 and 180. Try again!"); // Print out a prompt and ask user to input the number again<br>
+                                &emsp; &emsp; &emsp;} else { // if the turning angle is between 0 and 180<br>
+                                    &emsp; &emsp; &emsp; &emsp;myServo.write(angle); // let the Servo motor turn at the angle <br>
+                                    &emsp; &emsp; &emsp; &emsp;delay(15); // wait for the servo to get there<br>
+                                    &emsp; &emsp; &emsp;}<br>
+                                    &emsp; &emsp;count = 0; // Reset the count number to 0<br>
+                                    &emsp; &emsp;angle = 0; //Reset the turnint angle to 0<br>
+                                    &emsp; &emsp;}<br>
+                                    &emsp;}    <br>
+                    }<br>
+            </p>
+
+            <h4>
+                Circuit's Operation GIF:
+            </h4>
+            <p>
+                <IMG SRC="GIF.gif">
+            </p>
+
+            <h6>
+            Here is all the documentation for assignment 4!
+            </h6>
+        </div>
+        
+    </body>
+</html>
