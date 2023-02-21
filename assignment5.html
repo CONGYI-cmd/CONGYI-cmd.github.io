@@ -1,0 +1,127 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Congyi's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Congyi's Assignment 5!</h1>
+            <p>
+                This assignment contains a schematic, circuit, and code that uses a transistor to control load power separate from logic power. I used analogWrite(), a high-load output device, and an input sensor that uses a library. <br>
+                <br>
+            Components in the circuit:<br>
+            &emsp;1 DC motor<br>
+            &emsp;1 Flyback diode<br>
+            &emsp;1 Keypad<br>
+            &emsp;1 N-MOSFET transistor<br>
+            &emsp;Several wires<br>
+            </p>
+            <h4>
+                Schematic:
+            </h4>
+            <p>
+            <img src="A5/schematic.jpg" width=600></a>
+            </p>
+            <h4>
+                Calcuation:
+            </h4>
+            <p>
+                Arrcoding to the Motor Datasheet https://www.arduino.cc/documents/datasheets/DCmotor.PDF, the current is 90mA when the operating voltage is 6.0V DC. In my circuit, I used a 12V power so the min current can be assumed as 180mA.<br>
+                The max current would be 3.2A * 2 = 6.4A. The value is much smaller than the drain current of the trasistor (32A). So the circuit is safe to opearte.<br>
+                The flyback diode was added to aviod sudden voltage spikes. <br>
+            </p>
+            <h4>
+                Circuit:
+            </h4>
+            <p>
+                <img src="A5/circuit.jpg" width=600></a>
+            </p>
+            <p>
+                The circuit was implemented on my breadboard. The keypad is attached to pin 8, 7, 6, 5, 4, 3, 2, 1. The motor is powered by 12V power supply.<br> 
+                The G terminal of the transistor is connected to pin 9. Its D termianl is linked with the moter and the S terminal is connected to the ground.<br> 
+            <p>
+                What's more, the input keys will be printed in the serial monitor to give users a reference. 
+            </p>
+
+            <h4>
+            
+                Firmware:<br>
+                The program contains one keypad as input and DC motor as output<br>
+                It will print those input for giving a reference. 2 input keys will count as a new speed for the motor to spin.<br>
+                With the help of transistor, the system will gradually speed up to reach the set speed and then slow down to 0 speed.<br> 
+            </h4>
+            <p>
+                #include <Keypad.h> // include the Keypad library<br>
+                    <br/>
+                    const byte ROWS = 4; //four rows<br>
+                    const byte COLS = 4; //four columns<br>
+                    <br/>
+                    char keys[ROWS][COLS] = { // set up the rows and columns of the keypad<br>
+                        &emsp;  {'1','2','3','A'}, // the first row is '1','2','3','A'<br>
+                        &emsp;  {'4','5','6','B'}, // the second row is '4','5','6','B'<br>
+                        &emsp;  {'7','8','9','C'}, // the third row is '7','8','9','C'<br>
+                        &emsp;  {'*','0','#','D'} // the fourth row'*','0','#','D'<br>
+                    };<br>
+                    <br/>
+                    byte rowPins[ROWS] = {8, 7, 6, 5}; //connect to the row pinouts of the keypad<br>
+                    byte colPins[COLS] = {4, 3, 2, 1}; //connect to the column pinouts of the keypad<br>
+                    <br/>
+                    //Create an object of keypad<br>
+                    Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );<br>
+                    int count = 0; // initialize the count number as 0<br>
+                    int speed = 0; // initialize the turning angle as 0<br>
+                    <br/>
+                    void setup() {<br>
+                      &emsp;// put your setup code here, to run once:<br>
+                      &emsp;pinMode(9, OUTPUT); // set pin 9 as an output<br>
+                      &emsp;Serial.begin(9600); // initialize the serial at 9600 bits per second<br>
+                    }<br>
+                    <br/>
+                    void loop() {<br>
+                        &emsp;// put your main code here, to run repeatedly:<br>
+                        &emsp; char key = keypad.getKey(); // Read the key<br>
+                      <br/>
+                      &emsp;// if one key on the keypad is pressed by user<br>
+                      &emsp;if (key) {<br>
+                        &emsp;&emsp;Serial.print("Key Pressed : "); // print "Key Pressed : " in the serial monitor <br>
+                        &emsp;&emsp;Serial.println(key); // print the pressed key in the serial monitor<br>
+                        &emsp;&emsp;speed = (speed*10) + (key-48); // operate the angle number from ASCII key number to integer and change its unit<br>
+                        &emsp;&emsp;count+=1; // increase the count number by one<br>
+                        &emsp;&emsp;if (count >= 2) { // if the user input 2 or more than 2 numbers<br>
+                            &emsp;&emsp;&emsp;for (int x = 0; x<= speed; x++){ // increase the motor speed by 1 until it reaches the input speed<br>
+                                &emsp;&emsp;&emsp;&emsp;analogWrite(9, x); // write the transistor load which leads to change in motor speed<br>
+                                &emsp;&emsp;&emsp;&emsp;delay(50); // with for the motor to reach the speed<br>
+                                &emsp;&emsp;&emsp;}<br>
+                                &emsp;&emsp;&emsp;for (int x=speed; x>= 0; x--){ // decrease the motor speed by 1 until it reaches 0<br>
+                                    &emsp;&emsp;&emsp;&emsp;analogWrite (9, x);// write the transistor load which leads to change in motor speed<br>
+                                    &emsp;&emsp;&emsp;&emsp;delay(50); // with for the motor to reach the speed<br>
+                                    &emsp;&emsp;&emsp;}<br>
+                                    &emsp;&emsp;&emsp;count = 0; // Reset the count number to 0<br>
+                                    &emsp;&emsp;&emsp;speed = 0; //Reset the turnint angle to 0<br>
+                                    &emsp;&emsp;}<br>
+                                    &emsp;}  <br>
+                    }<br>
+                    
+            </p>
+
+            <h4>
+                Circuit's Operation GIF:
+            </h4>
+            <p>
+                <IMG SRC="A5/GIF2.gif">
+            </p>
+
+            <h6>
+            Here is all the documentation for assignment 5!
+            </h6>
+        </div>
+        
+    </body>
+</html>
