@@ -1,0 +1,208 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Congyi's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Congyi's Assignment 6!</h1>
+            <p>
+                This assignment creates a webpage with p5.js that interacts with the arduino.  <br>
+                <br>
+            Components in the circuit:<br>
+            &emsp;1 Servo motor<br>
+            &emsp;1 Joystick<br>
+            &emsp;Several wires<br>
+            </p>
+            <h4>
+                Schematic:
+            </h4>
+            <p>
+                schematic of joystick:
+            </p>
+            <p>
+            
+            <img src="A6/joystick.jpg" width=600></a>   
+
+            </p>
+            <p>
+                schematic of Servo Motor:
+            </p>
+            <p>
+                <img src="A6/servo.jpg" width=600></a>   
+            </p>
+            <h4>
+                Circuit:
+            </h4>
+            <p>
+                <img src="A6/A6 Circuit.jpg" width=600></a>
+            </p>
+            <p>
+                The circuit was implemented on my breadboard. The joystick is read by pin A1 and A2. The motor is powered by 5V and connected with pin 9.<br> 
+
+
+            <h4>
+            
+                Firmware:<br>
+                The program contains both an Ardunio File and a P5.js File.<br>
+                They enable the Web to talk with Servo motor and the Joystick talk back to the Web.<br>
+                <br/>
+                Ardunio File:<br>
+            </h4>
+            <p>
+                #include <Servo.h> // include the servo library<br>
+                    <br/>
+                    Servo myservo;  // create servo object<br>
+                    int pos = 90;   // variable to store servo position<br>
+                    <br/>
+                    void setup() {<br>
+                        &emsp;myservo.attach(9);  // attach servo to pin 9<br>
+                        &emsp;myservo.write(pos); // set initial position to 90 degrees<br>
+                        &emsp;Serial.begin(9600); // initialize serial communication<br>
+                    }<br>
+                    <br/>
+                    void loop() {<br>
+                        &emsp;int s1 = analogRead(A1); // Read the input from pin A1 and store it as an integer<br>
+                        &emsp;int s2 = analogRead(A2); // Read the input from pin A2 and store it as an integer<br>
+                        &emsp;// Print an array in the serial monitor<br>
+                        &emsp;Serial.print("["); <br>
+                        &emsp;Serial.print(s1);<br>
+                        &emsp;Serial.print(",");<br>
+                        &emsp;Serial.print(s2);<br>
+                        &emsp;Serial.println("]");<br>
+                        &emsp;if (Serial.available() > 0) { // if the serial port has any character<br>
+                            &emsp;&emsp;int val = Serial.read(); // read the command value<br>
+                            &emsp;&emsp;if (val >= 0 && val <= 180) { // check if value is valid<br>
+                                &emsp;&emsp;&emsp;pos = val;  // update servo position variable<br>
+                                &emsp;&emsp;&emsp;myservo.write(pos); // move servo to new position<br>
+                                &emsp;&emsp;}<br>
+                                &emsp;}<br>
+                    }<br>
+            </p>
+
+            <h4>
+                P5.js File (sketch.js):
+            </h4>
+            <p>
+                var serial;<br>
+var portName = 'COM4'; <br>
+let slider;<br>
+var serial; // variable to hold an instance of the serialport library<br>
+var dataarray = []; //some data coming in over serial!<br>
+let xSlider, ySlider;<br>
+<br/>
+
+function setup() {<br>
+    &emsp;serial = new p5.SerialPort();       // make a new instance of the serialport library<br>
+    &emsp;serial.on('list', printList);       // set a callback function for the serialport list event<br>
+    &emsp;serial.on('connected', serverConnected); // callback for connecting to the server<br>
+    &emsp;serial.on('open', portOpen);        // callback for the port opening<br>
+    &emsp;serial.on('data', serialEvent);     // callback for when new data arrives<br>
+    &emsp;serial.on('error', serialError);    // callback for errors<br>
+    &emsp;serial.on('close', portClose);      // callback for the port closing<br>
+  <br/>
+  &emsp;console.log("muffin");<br>
+  &emsp;serial.list();                      // list the serial ports<br>
+  &emsp;serial.open(portName);              // open a serial port<br>
+  &emsp;createCanvas(1200, 800);<br>
+  &emsp;// Create sliders for controlling servo motor<br>
+  &emsp;slider = createSlider(0, 100, 50);<br>
+  &emsp;slider.position(10, 10);<br>
+  &emsp;// Create sliders for x and y values<br>
+  &emsp;xSlider = createSlider(0, width, width / 2);<br>
+  &emsp;xSlider.position(10, 160);<br>
+  <br/>
+  &emsp;ySlider = createSlider(0, height, height / 2);<br>
+  &emsp;ySlider.position(10, 180);<br>
+}<br>
+<br/>
+// get the list of ports:<br>
+function printList(portList) {<br>
+    &emsp;// portList is an array of serial port names<br>
+    &emsp;for (var i = 0; i < portList.length; i++) {<br>
+        &emsp;&emsp;// Display the list the console:<br>
+        &emsp;&emsp;print(i + " " + portList[i]);<br>
+        &emsp;}<br>
+}<br>
+<br/>
+function serverConnected() {<br>
+    &emsp;print('connected to server.');<br>
+}<br>
+<br/>
+function portOpen() {<br>
+    &emsp;print('the serial port opened.')<br>
+}<br>
+<br/>
+
+  
+function serialError(err) {<br>
+    &emsp; print('Something went wrong with the serial port. ' + err);<br>
+}<br>
+<br/>
+function portClose() {<br>
+    &emsp; print('The serial port closed.');<br>
+}<br>
+<br/>
+function serialEvent() {<br>
+	&emsp;if (serial.available()) {<br>
+        &emsp;&emsp;var datastring = serial.readLine(); // readin some serial<br>
+        &emsp;&emsp;var newarray;<br>
+        &emsp;&emsp;try {<br>
+            &emsp;&emsp;&emsp;newarray = JSON.parse(datastring); // can we parse the serial<br>
+            &emsp;&emsp;&emsp;if (typeof newarray == 'object') {<br>
+                &emsp;&emsp;&emsp;&emsp;dataarray = newarray;<br>
+                &emsp;&emsp;&emsp;}<br>
+                &emsp;&emsp;} catch(err) {<br>
+        <br/>
+        &emsp;&emsp;}<br>
+        &emsp;}<br>
+}<br>
+<br/>
+function draw() {<br>
+    &emsp;background(220); // create a background<br>
+    &emsp;let val = map(slider.value(), 0, 100, 0, 180); // map the slider value to a number from 0 to 180<br>
+    &emsp;val = Math.floor(val); // round down the val into an integer<br>
+    &emsp;textSize(20); // set the text size to 20<br>
+    &emsp;text("Servo position: " + val, 10, 80);<br>
+    &emsp;serial.write(val); // send servo position to Arduino board<br>
+    &emsp; let xValue = dataarray[0]; // set the xValue to the first element in the dataarray<br>
+    &emsp; let yValue = dataarray[1]; // set the yValue to the seoncd element in the dataarray<br>
+    &emsp;let xCoord = map(xValue, 0, 1023, 0, width); // map the xValue to a number corresponding to the max value of the slider<br>
+    &emsp;let yCoord = map(yValue, 0, 1023, 0, height); // map the yValue to a number corresponding to the max vlaue of the slider<br>
+    &emsp;text("Joystick x-axis", 200, 170);<br>
+    &emsp;// set the value for the silder which shows x-axis of the joystick<br>
+    &emsp;xSlider.value(xCoord);<br>
+    &emsp;text("Joystick y-axis", 200, 200);<br>
+    &emsp;// set the value for the silder which shows y-axis of the joystick<br>
+    &emsp;ySlider.value(yCoord);<br>
+}<br>
+            </p>
+            <h4>
+                Circuit's Operation GIF:
+            </h4>
+            <p>
+                Joystick GIF:
+            </p>
+            <p>
+                <IMG SRC="A6/joystick.gif">
+            </p>
+            <p>
+                Servo GIF:
+            </p>
+            <p>
+                <IMG SRC="A6/Servo.gif">
+            </p>
+            <h6>
+            Here is all the documentation for assignment 6!
+            </h6>
+        </div>
+        
+    </body>
+</html>
