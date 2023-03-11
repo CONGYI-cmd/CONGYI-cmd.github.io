@@ -13,7 +13,6 @@
 
         <div class="header">
             <h1>Congyi's Final Project!</h1>
-
             <h4>
                 Proposal:
             </h4>
@@ -26,16 +25,20 @@
                 Concept:
             </h4>
             <p>
-                Inspired by the Trash Can Robot in Disneyland, I was planning to make something which brings joy to people live! My robot is high interactive and waiting for users to explore what song he can sing and what interaction he will make based on gesture inputs. Moving closer or farther to him can lead to different feedbacks. Therefore, wave at different distances to see various responses!
+                <img src="Final/Picture.jpg" width=600></a>
+            </p>
+            <p>
+                Inspired by the Trash Can Robot in Disneyland, I was planning to make something which brings happiness to people! My robot is highly interactive and waiting for users to explore what song he can sing and what interaction he will make based on gesture inputs. Moving closer or farther to him can lead to different feedbacks. Therefore, wave at different distances to see various responses!
             </p>
             <h4>
                 Technical Implementation Details:
             </h4>
             <p>
-                Key Electronic components - 5v battery, ultrasonic sensor, servo motors, buzzer, LED strip, transistor
-Arduino Library - Servo, ezBuzzer
-Since the robot contains a lot of features, I implemented them one by one and combine all of them together at the end:
-Implementation Sequence - Ultrasonic sensor -> Servo for opening and closing the lid -> Buzzer -> Servos use as his arms -> LED strip -> combine all the features together.
+                Key Electronic components - 5v battery, ultrasonic sensor, servo motors, buzzer, LED strip, transistor <br>
+Arduino Library - Servo, ezBuzzer<br>
+<br/>
+Since the robot contains a lot of features, I implemented them one by one and combine all of them together at the end:<br>
+Implementation Sequence - Ultrasonic sensor -> Servo for opening and closing the lid -> Buzzer -> Servos use as his arms -> LED strip -> combine all the features together.<br>
 
             </p>
             <h4>
@@ -45,7 +48,7 @@ Implementation Sequence - Ultrasonic sensor -> Servo for opening and closing the
                 <img src="Final/Circuit.jpg" width=600></a>
             </p>
             <p>
-                Becasue I added a lot of electronic components on my breadboard, it may looks messy. If you want to reproduce my work, please follow the schematic.
+                Becasue I added a lot of electronic components on my breadboard, it may look messy. If you want to reproduce my work, please follow the schematic.
             </p>
             <h4>
                 Schematic:
@@ -81,7 +84,7 @@ Implementation Sequence - Ultrasonic sensor -> Servo for opening and closing the
                 <img src="Final/LED strip.jpg" width=600></a>
             </p>
             <p>
-                Calculation: the drain current of the transistor is 32A. According to the datasheet of the Lepro 5M LED Strip Lights, at the back of the package, the watt at 12V is 16 watts. Therefore, the current is 16 W / 12V = 1.3 A. Since I am using a 9V battery as power, the LEDs will not be as bright as the 12V powered ones. In this case, the current will be smaller than 1.3 A which is safe to connect with a transistor. 
+                Calculation: the drain current of the transistor is 32A. According to the datasheet of the Lepro 5M LED Strip Lights, at the back of the package, the watt at 12V is 16 watts. Therefore, the current is 16 W / 12V = 1.3 A. Since I am using a 9V battery as power, the LEDs will not be as bright as the 12V powered ones. In this case, the current will be smaller than 1.3 A which is safe to connect with a transistor. The flyback diode was added to aviod sudden voltage spikes. 
             </p>
 
 
@@ -105,6 +108,7 @@ Here is all the code needed to run my Trash Can Robot. Make sure you download an
                     const int DISTANCE_THRESHOLD_1 = 60; // Set the distance threshold 1 to 60 centimeters <br>
                     const int DISTANCE_THRESHOLD_2 = 10; // Set the distance threshold 2 to 10 centimeters <br>
                     const int DISTANCE_THRESHOLD_3 = 100; // Set the distance threshold 3 to 100 centimeters <br>
+                    <br/>
                     // Define the melody of Brother John as notes1 <br>
                     int notes1[] = {262, 294, 330, 262, 262, 294, 330, 262, 330, 349, 392, 330, 349, 392};<br>
                     <br/>
@@ -113,15 +117,15 @@ Here is all the code needed to run my Trash Can Robot. Make sure you download an
                     <br/>
                     // Define the melody of Birthday Song as notes2<br>
                     int notes2[] = {262, 262, 294, 262, 349, 330, 262, 262,<br>
-                      262, 294, 262, 392, 349, 262, 262, 262,<br>
-                      440, 392, 349, 330, 294, 466, 466, 440,<br>
-                      349, 392, 262};<br>
+                        &emsp;262, 294, 262, 392, 349, 262, 262, 262,<br>
+                        &emsp;440, 392, 349, 330, 294, 466, 466, 440,<br>
+                        &emsp;349, 392, 262};<br>
                       <br>
                     // Define the duration for each note in notes2<br>
                     int durations2[] = {4, 4, 8, 8, 8, 2, 4, 4,<br>
-                      4, 4, 8, 8, 8, 2, 4, 4,<br>
-                      4, 4, 8, 8, 8, 2, 4, 4,<br>
-                      4, 4, 8}; // Durations of the notes in beats<br>
+                        &emsp;4, 4, 8, 8, 8, 2, 4, 4,<br>
+                        &emsp;4, 4, 8, 8, 8, 2, 4, 4,<br>
+                        &emsp;4, 4, 8}; // Durations of the notes in beats<br>
                       <br/>
                     // Define the melody of Twinkle Twinkle Little Star as notes3<br>
                     int notes3[] = {NOTE_C4, NOTE_C4, NOTE_G4, NOTE_G4, NOTE_A4, NOTE_A4, NOTE_G4, NOTE_F4, NOTE_F4, NOTE_E4, NOTE_E4, NOTE_D4, NOTE_D4, NOTE_C4};<br>
@@ -146,170 +150,170 @@ Here is all the code needed to run my Trash Can Robot. Make sure you download an
                     <br/>
                     
                     void setup() {<br>
-                      // Initialize the serial connection<br>
-                      Serial.begin (9600);       // initialize serial port<br>
-                      pinMode(TRIG_PIN, OUTPUT); // set arduino pin to output mode<br>
-                      pinMode(ECHO_PIN, INPUT);  // set arduino pin to input mode<br>
-                      servo.attach(SERVO_PIN);   // attaches the servo on pin 9 to the servo object<br>
-                      servo.write(0); // set the servo to 0<br>
-                      pinMode(buzzerPin, OUTPUT); // set the buzzerPin as an output<br>
-                      servo1.attach(2); // attach servo 1 to pin 2<br>
-                      servo2.attach(3); // attach servo 2 to pin 3<br>
-                      pinMode(TRANSISTOR_PIN, OUTPUT); // set the transistor pin as an output<br>
-                      analogWrite(TRANSISTOR_PIN, 100); // Write the brightness of LED strip to 100<br>
+                        &emsp;// Initialize the serial connection<br>
+                        &emsp;Serial.begin (9600);       // initialize serial port<br>
+                        &emsp;pinMode(TRIG_PIN, OUTPUT); // set arduino pin to output mode<br>
+                        &emsp;pinMode(ECHO_PIN, INPUT);  // set arduino pin to input mode<br>
+                        &emsp;servo.attach(SERVO_PIN);   // attaches the servo on pin 9 to the servo object<br>
+                        &emsp;servo.write(0); // set the servo to 0<br>
+                        &emsp;pinMode(buzzerPin, OUTPUT); // set the buzzerPin as an output<br>
+                        &emsp;servo1.attach(2); // attach servo 1 to pin 2<br>
+                        &emsp;servo2.attach(3); // attach servo 2 to pin 3<br>
+                        &emsp;pinMode(TRANSISTOR_PIN, OUTPUT); // set the transistor pin as an output<br>
+                        &emsp;analogWrite(TRANSISTOR_PIN, 100); // Write the brightness of LED strip to 100<br>
                     }<br>
                     <br/>
                     void loop() {<br>
-                      // put your main code here, to run repeatedly:<br>
-                      // generate 10-microsecond pulse to TRIG pin<br>
-                      digitalWrite(TRIG_PIN, HIGH); // Set TRIG_PIN HIGH<br>
-                      delayMicroseconds(10); // Wait for 10 microseconds<br>
-                      digitalWrite(TRIG_PIN, LOW); // Set TRIG_PIN LOW<br>
+                        &emsp;// put your main code here, to run repeatedly:<br>
+                        &emsp;// generate 10-microsecond pulse to TRIG pin<br>
+                        &emsp;digitalWrite(TRIG_PIN, HIGH); // Set TRIG_PIN HIGH<br>
+                        &emsp;delayMicroseconds(10); // Wait for 10 microseconds<br>
+                        &emsp;digitalWrite(TRIG_PIN, LOW); // Set TRIG_PIN LOW<br>
                       <br/>
-                      // measure duration of pulse from ECHO pin<br>
-                      duration_us = pulseIn(ECHO_PIN, HIGH);<br>
-                      // calculate the distance<br>
-                      distance_cm = 0.017 * duration_us;<br>
-                      // if the distance detected by the sensor is between threshold 1 and threshold 2<br>
-                      if(distance_cm < DISTANCE_THRESHOLD_1 && distance_cm > DISTANCE_THRESHOLD_2){<br>
-                        // run 14 times<br>
-                        for (int i = 0; i < 14; i++) {<br>
-                          tone(buzzerPin, notes1[i]); // let the buzzer sing the melody in notes1<br>
-                          delay(durations1[i]); // wait for the buzzer to sing the tone<br>
-                          noTone(buzzerPin); // stop the node<br>
+                      &emsp;// measure duration of pulse from ECHO pin<br>
+                      &emsp;duration_us = pulseIn(ECHO_PIN, HIGH);<br>
+                      &emsp;// calculate the distance<br>
+                      &emsp;distance_cm = 0.017 * duration_us;<br>
+                      &emsp;// if the distance detected by the sensor is between threshold 1 and threshold 2<br>
+                      &emsp;if (distance_cm < DISTANCE_THRESHOLD_1 && distance_cm > DISTANCE_THRESHOLD_2) {<br>
+                        &emsp;&emsp;// run 14 times<br>
+                        &emsp;&emsp;for (int i = 0; i < 14; i++) {<br>
+                            &emsp;&emsp;&emsp;tone(buzzerPin, notes1[i]); // let the buzzer sing the melody in notes1<br>
+                            &emsp;&emsp;&emsp;delay(durations1[i]); // wait for the buzzer to sing the tone<br>
+                            &emsp;&emsp;&emsp;noTone(buzzerPin); // stop the node<br>
                           <br/>
-                          // add 10 until the postion of servo 1 reaches 180<br>
-                          for (servo1Position = 0; servo1Position <= 180; servo1Position += 10) {<br>
-                            servo1.write(servo1Position); // Set the servo 1 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                            servo.write(120); // rotate servo motor to 120 degree<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// add 10 until the postion of servo 1 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo1Position = 0; servo1Position <= 180; servo1Position += 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo1.write(servo1Position); // Set the servo 1 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;&emsp;servo.write(120); // rotate servo motor to 120 degree<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // minus 10 until the postion of servo 2 reaches 180<br>
-                          for (servo2Position = 180; servo2Position >= 0; servo2Position -= 10) {<br>
-                            servo2.write(servo2Position); // Set the servo 2 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// minus 10 until the postion of servo 2 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo2Position = 180; servo2Position >= 0; servo2Position -= 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo2.write(servo2Position); // Set the servo 2 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // minus 10 until the postion of servo 1 reaches 180<br>
-                          for (servo1Position = 180; servo1Position >= 0; servo1Position -= 10) {<br>
-                            servo1.write(servo1Position); // Set the servo 1 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// minus 10 until the postion of servo 1 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo1Position = 180; servo1Position >= 0; servo1Position -= 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo1.write(servo1Position); // Set the servo 1 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // add 10 until the postion of servo 2 reaches 180<br>
-                          for (servo2Position = 0; servo2Position <= 180; servo2Position += 10) {<br>
-                            servo2.write(servo2Position); // Set the servo 2 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                            servo.write(0); // rotate servo motor to 0 degree<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// add 10 until the postion of servo 2 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo2Position = 0; servo2Position <= 180; servo2Position += 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo2.write(servo2Position); // Set the servo 2 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;&emsp;servo.write(0); // rotate servo motor to 0 degree<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // start from 0, increase i by 1 until the number reaches 100<br>
-                          for (int i = 0; i <=100; i++){<br>
-                            analogWrite(TRANSISTOR_PIN, i); // set the brightness of LED strip to i<br>
-                            delay(2); // wait 2 millisecond <br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// start from 0, increase i by 1 until the number reaches 100<br>
+                          &emsp;&emsp;&emsp;for (int i = 0; i <=100; i++){<br>
+                            &emsp;&emsp;&emsp;&emsp;analogWrite(TRANSISTOR_PIN, i); // set the brightness of LED strip to i<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(2); // wait 2 millisecond <br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                        }<br>
+                          &emsp;&emsp;}<br>
                         <br/>
-                      }<br>
+                        &emsp;}<br>
                       <br/>
-                      // if the distance detected by the sensor is smaller than distance threshold 2<br>
-                      if(distance_cm < DISTANCE_THRESHOLD_2){<br>
-                        servo.write(120); // rotate servo motor to 120 degrees<br>
+                      &emsp;// if the distance detected by the sensor is smaller than distance threshold 2<br>
+                      &emsp;if (distance_cm < DISTANCE_THRESHOLD_2) {<br>
+                        &emsp;&emsp;servo.write(120); // rotate servo motor to 120 degrees<br>
                         <br/>
-                        // run the following code based on the the number of elements in notes2<br>
-                        for (int i = 0; i < sizeof(notes2) / sizeof(notes2[0]); i++) {<br>
+                        &emsp;&emsp;// run the following code based on the the number of elements in notes2<br>
+                        &emsp;&emsp;for (int i = 0; i < sizeof(notes2) / sizeof(notes2[0]); i++) {<br>
                             <br/>
-                          // start from 100, decrease i by 1 until the number reaches 0<br>
-                          for (int i = 100; i >=0; i--){<br>
-                          analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
-                          delay(2); // wait 2 milliseconds<br>
-                          }<br>
+                            &emsp;&emsp;&emsp;// start from 100, decrease i by 1 until the number reaches 0<br>
+                            &emsp;&emsp;&emsp;for (int i = 100; i >=0; i--){<br>
+                                &emsp;&emsp;&emsp;&emsp;analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
+                                &emsp;&emsp;&emsp;&emsp;delay(2); // wait 2 milliseconds<br>
+                                &emsp;&emsp;&emsp;}<br>
                           <br/>
                           
-                          int noteDuration = 1000 / durations2[i]; // Compute the value of noteDuration<br>
-                          tone(buzzerPin, notes2[i], noteDuration); // Play the note on the piezo buzzer<br>
-                          delay(noteDuration * 1.30); // Wait for the duration plus a small pause<br>
-                          noTone(buzzerPin); // Stop the note<br>
+                          &emsp;&emsp;&emsp;int noteDuration = 1000 / durations2[i]; // Compute the value of noteDuration<br>
+                          &emsp;&emsp;&emsp;tone(buzzerPin, notes2[i], noteDuration); // Play the note on the piezo buzzer<br>
+                          &emsp;&emsp;&emsp;delay(noteDuration * 1.30); // Wait for the duration plus a small pause<br>
+                          &emsp;&emsp;&emsp;noTone(buzzerPin); // Stop the note<br>
                           <br/>
                     
                         
-                          // start from 0, increase i by 1 until the number reaches 100<br>
-                          for (int i = 0; i <=100; i++){<br>
-                            analogWrite(TRANSISTOR_PIN, i); // write the brightness of light strip to i<br>
-                            delay(2); // wait 2 milliseconds<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// start from 0, increase i by 1 until the number reaches 100<br>
+                          &emsp;&emsp;&emsp;for (int i = 0; i <=100; i++){<br>
+                            &emsp;&emsp;&emsp;&emsp;analogWrite(TRANSISTOR_PIN, i); // write the brightness of light strip to i<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(2); // wait 2 milliseconds<br>
+                            &emsp;&emsp;&emsp;}<br>
                           
-                        }<br>
+                            &emsp;&emsp;}<br>
                         <br/>
-                        // repeat the following code for 5 times<br>
-                        for (int i = 0; i < 5; i++) {<br>
+                        &emsp;&emsp;// repeat the following code for 5 times<br>
+                        &emsp;&emsp;for (int i = 0; i < 5; i++) {<br>
                             <br/>
-                          // add 10 until the postion of servo 1 reaches 180<br>
-                          for (servo1Position = 0; servo1Position <= 180; servo1Position += 10) {<br>
-                            servo1.write(servo1Position); // Set the servo 1 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                          }<br>
+                            &emsp;&emsp;&emsp;// add 10 until the postion of servo 1 reaches 180<br>
+                            &emsp;&emsp;&emsp;for (servo1Position = 0; servo1Position <= 180; servo1Position += 10) {<br>
+                                &emsp;&emsp;&emsp;&emsp;servo1.write(servo1Position); // Set the servo 1 position<br>
+                                &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                                &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // minus 10 until the postion of servo 2 reaches 180<br>
-                          for (servo2Position = 180; servo2Position >= 0; servo2Position -= 10) {<br>
-                            servo2.write(servo2Position); // Set the servo 2 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// minus 10 until the postion of servo 2 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo2Position = 180; servo2Position >= 0; servo2Position -= 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo2.write(servo2Position); // Set the servo 2 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // minus 10 until the postion of servo 1 reaches 180<br>
-                          for (servo1Position = 180; servo1Position >= 0; servo1Position -= 10) {<br>
-                            servo1.write(servo1Position); // Set the servo 1 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                          }<br>
+                          &emsp;&emsp;&emsp;// minus 10 until the postion of servo 1 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo1Position = 180; servo1Position >= 0; servo1Position -= 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo1.write(servo1Position); // Set the servo 1 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                          // add 10 until the postion of servo 2 reaches 180<br>
-                          for (servo2Position = 0; servo2Position <= 180; servo2Position += 10) {<br>
-                            servo2.write(servo2Position); // Set the servo 2 position<br>
-                            delay(10); // Wait for the servo to reach the position<br>
-                            <br/>
-                          }<br>
+                          &emsp;&emsp;&emsp;// add 10 until the postion of servo 2 reaches 180<br>
+                          &emsp;&emsp;&emsp;for (servo2Position = 0; servo2Position <= 180; servo2Position += 10) {<br>
+                            &emsp;&emsp;&emsp;&emsp;servo2.write(servo2Position); // Set the servo 2 position<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // Wait for the servo to reach the position<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                        }<br>
-                        servo.write(0); // rotate the servo to 0 degree<br>
+                        &emsp;&emsp;}<br>
+                        &emsp;&emsp;servo.write(0); // rotate the servo to 0 degree<br>
                         <br/>
-                      }<br>
+                        &emsp;}<br>
                       <br/>
-                      // if the detected distance is between thresholde 1 and threshold 3<br>
-                      if(distance_cm > DISTANCE_THRESHOLD_1 && distance_cm < DISTANCE_THRESHOLD_3){<br>
-                        servo.write(120); // rotate servo motor to 120 degree<br>
+                      &emsp;// if the detected distance is between thresholde 1 and threshold 3<br>
+                      &emsp;if (distance_cm > DISTANCE_THRESHOLD_1 && distance_cm < DISTANCE_THRESHOLD_3) {<br>
+                        &emsp;&emsp;servo.write(120); // rotate servo motor to 120 degree<br>
                         <br/>
-                        // run the following code based on the the number of elements in notes3<br>
-                         for (int i = 0; i < sizeof(notes3) / sizeof(notes3[0]); i++) {<br>
-                          int noteDuration = 1000 / durations3[i]; // Compute the value of noteDuration<br>
-                          tone(buzzerPin, notes3[i], noteDuration); // Play the note on the piezo buzzer<br>
-                          delay(noteDuration * 1.30); // Wait for the duration plus a small pause<br>
-                          noTone(buzzerPin); // Stop the note<br>
-                         }<br>
+                        &emsp;&emsp;// run the following code based on the the number of elements in notes3<br>
+                        &emsp;&emsp; for (int i = 0; i < sizeof(notes3) / sizeof(notes3[0]); i++) {<br>
+                            &emsp;&emsp;&emsp;int noteDuration = 1000 / durations3[i]; // Compute the value of noteDuration<br>
+                            &emsp;&emsp;&emsp;tone(buzzerPin, notes3[i], noteDuration); // Play the note on the piezo buzzer<br>
+                            &emsp;&emsp;&emsp;delay(noteDuration * 1.30); // Wait for the duration plus a small pause<br>
+                            &emsp;&emsp;&emsp;noTone(buzzerPin); // Stop the note<br>
+                            &emsp;&emsp;}<br>
                          <br/>
-                        // run the following code for 5 times<br>
-                        for (int i = 0; i < 5; i++) {<br>
-                          // start from 100, decrease i by 1 until the number reaches 0<br>
-                          for (int i = 100; i >=0; i--){<br>
-                            analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
-                            delay(10); // wait 10 milliseconds<br>
-                          }<br>
+                         &emsp;&emsp;// run the following code for 5 times<br>
+                         &emsp;&emsp;for (int i = 0; i < 5; i++) {<br>
+                            &emsp;&emsp;&emsp;// start from 100, decrease i by 1 until the number reaches 0<br>
+                            &emsp;&emsp;&emsp;for (int i = 100; i >=0; i--){<br>
+                            &emsp;&emsp;&emsp;&emsp;analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // wait 10 milliseconds<br>
+                            &emsp;&emsp;&emsp;}<br>
                           <br/>
-                    // start from 0, increase i by 1 until the number reaches 100<br>
-                          for (int i = 0; i <=100; i++){<br>
-                            analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
-                            delay(10); // wait 10 milliseconds<br>
-                          }<br>
-                        }<br>
-                        servo.write(0); // rotate the servo motor to 0 degree<br>
-                      }<br>
-                      // print the value to Serial Monitor<br>
-                      Serial.print("distance: "); // print "distance: " in the serial monitor<br>
-                      Serial.print(distance_cm); // print the number of distance detected by the ultrasonic sensor<br>
-                      Serial.println(" cm"); // print " cm" in the serial mnonitor<br>
+                          &emsp;&emsp;&emsp;// start from 0, increase i by 1 until the number reaches 100<br>
+                          &emsp;&emsp;&emsp;for (int i = 0; i <=100; i++) {<br>
+                            &emsp;&emsp;&emsp;&emsp;analogWrite(TRANSISTOR_PIN, i); // write the brightness of LED strip to i<br>
+                            &emsp;&emsp;&emsp;&emsp;delay(10); // wait 10 milliseconds<br>
+                            &emsp;&emsp;&emsp;}<br>
+                            &emsp;&emsp;}<br>
+                            &emsp;&emsp;servo.write(0); // rotate the servo motor to 0 degree<br>
+                            <br/>
+                            &emsp;}<br>
+                            &emsp;// print the value to Serial Monitor<br>
+                            &emsp;Serial.print("distance: "); // print "distance: " in the serial monitor<br>
+                            &emsp;Serial.print(distance_cm); // print the number of distance detected by the ultrasonic sensor<br>
+                            &emsp;Serial.println(" cm"); // print " cm" in the serial mnonitor<br>
                       <br/>
-                      delay(500); // wait 500 milliseconds<br>
+                      &emsp;delay(500); // wait 500 milliseconds<br>
                     
                     }
             </p>
@@ -318,7 +322,9 @@ Here is all the code needed to run my Trash Can Robot. Make sure you download an
             </h4>
 
             <p>
-                <IMG SRC="Final/Demo.mp4">
+                <video width="540" height="960" controls>
+                    <source src="Final/Demo.mp4" type="video/mp4">
+                  </video>
             </p>
             
             <h6>
